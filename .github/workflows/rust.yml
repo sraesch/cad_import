@@ -1,0 +1,23 @@
+name: Rust
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install && Build web UI
+        run: (cd web_ui/web/web-ui && yarn install && yarn build)
+      - name: Build Rust
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
