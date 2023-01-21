@@ -15,8 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Install && Build web UI
-        run: (cd web_ui/web/web-ui && yarn install && yarn build)
       - name: Build Rust
         run: cargo build --verbose
       - name: Run tests
