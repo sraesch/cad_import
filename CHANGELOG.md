@@ -9,4 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added CI/CD pipeline integration
+
+### Added
+
 - Added first simple version of in-memory structure
