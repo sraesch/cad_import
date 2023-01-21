@@ -58,6 +58,11 @@ impl Node {
         self.children.push(child);
     }
 
+    /// Returns a reference onto the children of this node
+    pub fn get_children(&self) -> &[Node] {
+        &self.children
+    }
+
     /// Attaches a shape to the current node.
     ///
     /// # Arguments
@@ -119,12 +124,24 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_node_eq() {
-        let node0 = Node::new("node".to_owned());
+    fn test_node_basic() {
+        let mut node0 = Node::new("node".to_owned());
         let node1 = Node::new("node".to_owned());
+
+        let node_id1 = node1.get_id();
+
+        assert!(node0.is_leaf());
+        assert!(node1.is_leaf());
 
         assert_eq!(node0, node0);
         assert_eq!(node1, node1);
         assert_ne!(node0, node1);
+
+        node0.add_child(node1);
+
+        assert!(!node0.is_leaf());
+        assert_eq!(node0.get_children().len(), 1);
+        let node1 = &node0.get_children()[0];
+        assert_eq!(node1.get_id(), node_id1);
     }
 }

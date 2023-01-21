@@ -3,7 +3,8 @@ use super::component::{Point3D, Normal};
 pub type Positions = Vec<Point3D>;
 pub type Normals = Vec<Normal>;
 
-///A single attribute, e.g., positions, normals, vertices,...
+/// Vertices contains a vertex list. A vertex is a position in space with additional optional
+/// attributes like normals, color, ... etc.
 pub struct Vertices {
     positions: Positions,
     normals: Option<Normals>,
@@ -34,5 +35,10 @@ impl Vertices {
     /// Returns a reference onto the positions attribute.
     pub fn get_positions(&self) -> &Positions {
         &self.positions
+    }
+
+    /// Returns a reference onto the normals attribute.
+    pub fn get_normals(&self) -> Option<&Normals> {
+        self.normals.as_ref()
     }
 }
