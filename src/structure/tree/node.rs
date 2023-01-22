@@ -3,8 +3,7 @@ use std::fmt::{Debug, Display};
 use nalgebra_glm::Mat4;
 
 use crate::{
-    id::{IDCounter, ID},
-    structure::shape::shape::Shape,
+    structure::shape::shape::Shape, basic_types::id::{IDCounter, ID},
 };
 
 static ID_COUNTER: IDCounter = IDCounter::new();
