@@ -8,7 +8,7 @@ pub trait Loader {
     fn get_name(&self) -> &str;
 
     /// Returns the priority of the loader. The higher the priority the more likely that the
-    /// loader is choosen if multiple loaders match for a given resource.
+    /// loader is chosen if multiple loaders match for a given resource.
     fn get_priority(&self) -> u32;
 
     /// Returns list of supported file extensions in lower case.

@@ -1,11 +1,50 @@
-use std::{collections::HashMap, rc::Rc};
-
-use multimap::MultiMap;
+use std::{
+    collections::{BinaryHeap, HashMap},
+    rc::Rc,
+};
 
 use super::loader::Loader;
 
+#[derive(Clone)]
+struct LoaderEntry {
+    pub loader: Rc<dyn Loader>,
+    pub priority: u32,
+}
+
+impl LoaderEntry {
+    /// Returns a new loader entry.
+    ///
+    /// # Arguments
+    /// * `loader` - The loader to store in the loader entry.
+    pub fn new(loader: Rc<dyn Loader>) -> Self {
+        let priority = loader.get_priority();
+
+        Self { loader, priority }
+    }
+}
+
+impl Ord for LoaderEntry {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.priority.cmp(&other.priority)
+    }
+}
+
+impl PartialOrd for LoaderEntry {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.priority.partial_cmp(&other.priority)
+    }
+}
+
+impl PartialEq for LoaderEntry {
+    fn eq(&self, other: &Self) -> bool {
+        self.priority == other.priority
+    }
+}
+
+impl Eq for LoaderEntry {}
+
 /// A list of loaders sorted by priority
-type LoaderList = MultiMap<u32, Rc<dyn Loader>>;
+type LoaderList = BinaryHeap<LoaderEntry>;
 
 /// A map of loaders
 type LoaderMap = HashMap<String, LoaderList>;
@@ -32,12 +71,12 @@ impl Manager {
     /// # Arguments
     /// * `loader` - The loader to register.
     pub fn register_loader(&mut self, loader: Box<dyn Loader>) {
-        let priority = loader.get_priority();
         let extensions = loader.as_ref().get_extensions();
         let mime_types = loader.get_mime_types();
 
         // create reference counter of loader
         let loader: Rc<dyn Loader> = loader.into();
+        let loader_entry = LoaderEntry::new(loader);
 
         // register loader based on its extension
         for ext in extensions.iter() {
@@ -46,7 +85,7 @@ impl Manager {
                 .entry(ext.clone())
                 .or_insert_with(|| LoaderList::new());
 
-            loader_list.insert(priority, loader.clone());
+            loader_list.push(loader_entry.clone());
         }
 
         // register loader based on its mime type
@@ -56,7 +95,7 @@ impl Manager {
                 .entry(mim_type.clone())
                 .or_insert_with(|| LoaderList::new());
 
-            loader_list.insert(priority, loader.clone());
+            loader_list.push(loader_entry.clone());
         }
     }
 
@@ -68,7 +107,14 @@ impl Manager {
         let ext = ext.to_lowercase();
 
         match self.map_ext.get(&ext) {
-            Some(lst) => lst.iter().last().map(|(_, l)| l.clone()),
+            Some(lst) => {
+                let e = match lst.peek() {
+                    Some(l) => Some(l.loader.clone()),
+                    None => None,
+                };
+
+                e
+            }
             None => None,
         }
     }
@@ -81,7 +127,14 @@ impl Manager {
         let mime_type = mime_type.to_lowercase();
 
         match self.map_mime.get(&mime_type) {
-            Some(lst) => lst.iter().last().map(|(_, l)| l.clone()),
+            Some(lst) => {
+                let e = match lst.peek() {
+                    Some(l) => Some(l.loader.clone()),
+                    None => None,
+                };
+
+                e
+            }
             None => None,
         }
     }

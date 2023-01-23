@@ -3,9 +3,7 @@ name = "cad_import"
 version = "0.0.1"
 readme = "README.md"
 license = "MIT"
-authors = [
-"sraesch",
-]
+authors = ["sraesch"]
 
 description = "A simple library for importing CAD data from different formats into a uniform in-memory structure."
 documentation = "https://docs.rs/cad_import/"
@@ -19,4 +17,3 @@ edition = "2021"
 [dependencies]
 quick-error = "2.0"
 nalgebra-glm = "0.3"
-multimap = "0.8"
