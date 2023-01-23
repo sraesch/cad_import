@@ -1,5 +1,3 @@
-use std::io::Read;
-
 use crate::{error::Error, structure::cad_data::CADData};
 
 /// The trait for a registered loader.
