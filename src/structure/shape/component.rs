@@ -6,14 +6,14 @@ pub trait Component: Sized + Default + Clone + Copy + PartialEq + Debug {
     ///  f == 0 => returns self
     /// ]0,1[ => interpolates between self and rhs
     ///  f == 1 => returns rhs
-    /// 
+    ///
     /// # Arguments
     /// * `rhs` - The right-hand-side component of the interpolation.
     /// * `f` - The interpolation factor between 0 and 1.
     fn interpolate(&self, rhs: &Self, f: f32) -> Self;
 }
 
-/// A single floating point 
+/// A single floating point
 #[derive(Clone, Copy, Default, PartialEq, Debug)]
 pub struct Float(f32);
 
@@ -45,7 +45,7 @@ impl Component for Point3D {
                 self.v[0] * (1f32 - f) + f * rhs.v[0],
                 self.v[1] * (1f32 - f) + f * rhs.v[1],
                 self.v[2] * (1f32 - f) + f * rhs.v[2],
-            ]
+            ],
         }
     }
 }
@@ -69,11 +69,20 @@ mod tests {
 
     #[test]
     fn test_point_interpolate() {
-        let a: Point3D = Point3D{ v: [-1f32, -4f32, -8f32] };
-        let b: Point3D = Point3D{ v: [1f32, 4f32, 8f32] };
+        let a: Point3D = Point3D {
+            v: [-1f32, -4f32, -8f32],
+        };
+        let b: Point3D = Point3D {
+            v: [1f32, 4f32, 8f32],
+        };
 
         assert_eq!(a.interpolate(&b, 0f32), a);
         assert_eq!(a.interpolate(&b, 1f32), b);
-        assert_eq!(a.interpolate(&b, 0.5f32), Point3D{ v: [0f32, 0f32, 0f32] });
+        assert_eq!(
+            a.interpolate(&b, 0.5f32),
+            Point3D {
+                v: [0f32, 0f32, 0f32]
+            }
+        );
     }
 }
