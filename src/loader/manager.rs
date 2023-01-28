@@ -50,6 +50,9 @@ type LoaderList = BinaryHeap<LoaderEntry>;
 type LoaderMap = HashMap<String, LoaderList>;
 
 pub struct Manager {
+    /// The internal list of all loaders
+    loader: Vec<Rc<dyn Loader>>,
+
     /// Map from file extensions to a list of loaders
     map_ext: LoaderMap,
 
@@ -58,9 +61,19 @@ pub struct Manager {
 }
 
 impl Manager {
+    /// Creates and returns a loader manager initialized with multiple loaders.
+    pub fn new() -> Self {
+        let mut result = Self::new_empty();
+
+        // register loaders here...
+
+        result
+    }
+
     /// Creates and returns a new empty loader manager
     pub fn new_empty() -> Self {
         Self {
+            loader: Vec::new(),
             map_ext: HashMap::new(),
             map_mime: HashMap::new(),
         }
@@ -76,7 +89,10 @@ impl Manager {
 
         // create reference counter of loader
         let loader: Rc<dyn Loader> = loader.into();
-        let loader_entry = LoaderEntry::new(loader);
+        let loader_entry = LoaderEntry::new(loader.clone());
+
+        // register loader in the general loader list
+        self.loader.push(loader);
 
         // register loader based on its extension
         for ext in extensions.iter() {
@@ -137,6 +153,11 @@ impl Manager {
             }
             None => None,
         }
+    }
+
+    /// Returns reference onto the internal list of loader
+    pub fn get_loader_list(&self) -> &[Rc<dyn Loader>] {
+        &self.loader
     }
 }
 
@@ -230,5 +251,7 @@ mod tests {
             m.get_loader_by_extension("foobar").unwrap().get_name(),
             "loader2"
         );
+
+        assert_eq!(m.get_loader_list().len(), 2);
     }
 }
