@@ -14,10 +14,7 @@ pub struct ShapePart {
 
 impl ShapePart {
     pub fn new(mesh: Rc<Mesh>, material: Rc<Material>) -> Self {
-        Self {
-            mesh,
-            material
-        }
+        Self { mesh, material }
     }
 
     /// Returns the internal mesh reference.
@@ -64,6 +61,11 @@ impl Shape {
     /// * `part` - The part to add.
     pub fn add_part(&mut self, part: ShapePart) {
         self.parts.push(part);
+    }
+
+    /// Returns a reference onto the parts of the shapes.
+    pub fn get_parts(&self) -> &[ShapePart] {
+        &self.parts
     }
 }
 
