@@ -30,7 +30,7 @@ use log::{debug, trace};
 type LineWithNumber = (usize, Result<String, IOError>);
 
 /// A loader for OFF (Object File Format)
-/// Specification: See https://segeval.cs.princeton.edu/public/off_format.html
+/// Specification: See `<https://segeval.cs.princeton.edu/public/off_format.html>`
 pub struct LoaderOff {}
 
 impl LoaderOff {
