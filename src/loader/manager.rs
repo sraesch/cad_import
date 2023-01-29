@@ -3,7 +3,7 @@ use std::{
     rc::Rc,
 };
 
-use super::loader::Loader;
+use super::{loader::Loader, loader_off::LoaderOff};
 
 #[derive(Clone)]
 struct LoaderEntry {
@@ -66,6 +66,7 @@ impl Manager {
         let mut result = Self::new_empty();
 
         // register loaders here...
+        result.register_loader(Box::new(LoaderOff::new()));
 
         result
     }
@@ -253,5 +254,20 @@ mod tests {
         );
 
         assert_eq!(m.get_loader_list().len(), 2);
+    }
+
+    #[test]
+    fn test_if_loaders_are_registered() {
+        let manager = Manager::new();
+        let loader = manager.get_loader_by_extension("off").unwrap();
+        assert_eq!(loader.get_name(), "Object File Format");
+
+        let loader = manager.get_loader_by_mime_type("model/vnd.off").unwrap();
+        assert_eq!(loader.get_name(), "Object File Format");
+
+        let loaders = manager.get_loader_list();
+        assert_eq!(loaders.len(), 1);
+        let loader = loaders.first().unwrap();
+        assert_eq!(loader.get_name(), "Object File Format");
     }
 }
