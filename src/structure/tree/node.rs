@@ -6,8 +6,8 @@ use std::{
 use nalgebra_glm::Mat4;
 
 use crate::{
-    basic_types::id::{IDCounter, ID},
-    structure::shape::shape::Shape,
+    basic_types::{IDCounter, ID},
+    structure::Shape,
 };
 
 static ID_COUNTER: IDCounter = IDCounter::new();

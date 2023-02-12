@@ -49,6 +49,7 @@ type LoaderList = BinaryHeap<LoaderEntry>;
 /// A map of loaders
 type LoaderMap = HashMap<String, LoaderList>;
 
+/// The manager contains a list of loaders which can be searched by mime-types or file extensions.
 pub struct Manager {
     /// The internal list of all loaders
     loader: Vec<Rc<dyn Loader>>,
@@ -205,7 +206,7 @@ mod tests {
         fn read_file(
             &self,
             _: &mut dyn std::io::Read,
-        ) -> Result<crate::structure::cad_data::CADData, crate::error::Error> {
+        ) -> Result<crate::structure::CADData, crate::Error> {
             todo!()
         }
 

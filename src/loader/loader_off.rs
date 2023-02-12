@@ -7,18 +7,11 @@ use std::{
 };
 
 use crate::{
-    basic_types::color::RGBA,
+    basic_types::RGBA,
     error::Error,
     structure::{
-        cad_data::CADData,
-        shape::{
-            component::Point3D,
-            mesh::Mesh,
-            primitives::{PrimitiveType, Primitives},
-            shape::{Shape, ShapePart},
-            vertices::{Colors, Positions, Vertices},
-        },
-        tree::node::Node,
+        CADData, Colors, Mesh, Node, Point3D, Positions, PrimitiveType, Primitives, Shape,
+        ShapePart, Vertices,
     },
 };
 

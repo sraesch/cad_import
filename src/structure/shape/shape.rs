@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use crate::basic_types::id::{IDCounter, ID};
+use crate::basic_types::{IDCounter, ID};
 
 use super::{material::Material, mesh::Mesh};
 

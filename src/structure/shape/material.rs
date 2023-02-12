@@ -1,4 +1,4 @@
-use crate::basic_types::color::{Color, RGB};
+use crate::basic_types::{Color, RGB};
 
 pub enum Material {
     None,

@@ -1,4 +1,4 @@
-use crate::{basic_types::color::RGBA, error::Error};
+use crate::{basic_types::RGBA, error::Error};
 
 use super::component::{Normal, Point3D};
 

@@ -1,6 +1,6 @@
 use nalgebra_glm::{vec4_to_vec3, Vec3, Vec4};
 
-use crate::structure::shape::component::Component;
+use crate::structure::Component;
 
 /// Trait for all color types
 pub trait Color {
