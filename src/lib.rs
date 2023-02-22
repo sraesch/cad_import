@@ -29,6 +29,7 @@
 //! ```rust
 //! use cad_import::loader::Manager;
 //! use std::fs::File;
+//! use std::env;
 //!
 //! fn main() {
 //!     let manager = Manager::new();
@@ -36,10 +37,17 @@
 //!
 //!     let loader = manager.get_loader_by_mime_type(mime_type).unwrap();
 //!
-//!     let file_path = "test.off";
-//!     let mut reader = File::open(file_path).unwrap();
+//!     let args: Vec<String> = env::args().collect();
+//!     let args = &args[1..];
 //!
-//!     let cad_data = loader.read_file(&mut reader);
+//!     if args.len() != 2 {
+//!       println!("USAGE: <FILE-PATH>");
+//!     } else {
+//!         let file_path = &args[1];
+//!         let mut reader = File::open(file_path).unwrap();
+//!
+//!         let cad_data = loader.read_file(&mut reader);
+//!     }
 //! }
 //! ```
 mod basic_types;
